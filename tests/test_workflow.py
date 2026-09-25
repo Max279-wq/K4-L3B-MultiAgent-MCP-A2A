@@ -195,3 +195,106 @@ def test_submission_rejects_output_without_evidence(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="has no MCP evidence refs"):
         validate_artifacts(tmp_path, case_set, Contracts(ROOT / "contracts" / "schemas"))
+
+
+def layered_data() -> dict[str, Any]:
+    """Two history rows share one order id; only the older one matches the claim."""
+    recent = {
+        "order_id": ORDER_ID,
+        "order_status": "delivered",
+        "order_purchase_timestamp": "2018-05-11T09:00:00-03:00",
+        "order_delivered_carrier_date": "2018-05-13T09:00:00-03:00",
+        "order_delivered_customer_date": "2018-05-20T09:00:00-03:00",
+        "order_estimated_delivery_date": "2018-05-21T09:00:00-03:00",
+    }
+    older = {
+        "order_id": ORDER_ID,
+        "order_status": "delivered",
+        "order_purchase_timestamp": "2017-12-20T09:00:00-03:00",
+        "order_delivered_carrier_date": "2017-12-22T09:00:00-03:00",
+        "order_delivered_customer_date": "2018-01-04T09:00:00-03:00",
+        "order_estimated_delivery_date": "2017-12-30T09:00:00-03:00",
+    }
+    item = {
+        "order_id": ORDER_ID,
+        "order_item_id": "item-1",
+        "seller_id": SELLER_ID,
+        "price": "79.00",
+    }
+    return base_data(
+        get_customer_history={"customer_unique_id": CUSTOMER, "orders": [recent, older]},
+        get_order=recent,
+        get_order_items=[
+            {**item, "shipping_limit_date": "2018-05-14T09:00:00-03:00", "freight_value": "10.00"},
+            {**item, "shipping_limit_date": "2017-12-23T09:00:00-03:00", "freight_value": "18.00"},
+        ],
+        get_shipment_summary={
+            "delivered_carrier_at": recent["order_delivered_carrier_date"],
+            "delivered_customer_at": recent["order_delivered_customer_date"],
+            "estimated_delivery_at": recent["order_estimated_delivery_date"],
+            "events": [
+                {
+                    "event_at": "2018-01-04T09:00:00-03:00",
+                    "event_type": "delivered_late",
+                    "actor": "logistics_provider",
+                    "status": "confirmed",
+                }
+            ],
+        },
+        get_payment_timeline={
+            "payments": [
+                {
+                    "payment_sequential": "1",
+                    "payment_type": "credit_card",
+                    "payment_value": "89.00",
+                },
+                {
+                    "payment_sequential": "1",
+                    "payment_type": "credit_card",
+                    "payment_value": "16.00",
+                },
+            ],
+            "events": [
+                {
+                    "event_at": "2018-05-11T10:00:00-03:00",
+                    "event_type": "captured",
+                    "amount_brl": "89.00",
+                },
+                {
+                    "event_at": "2017-12-20T10:00:00-03:00",
+                    "event_type": "captured",
+                    "amount_brl": "16.00",
+                },
+            ],
+        },
+        get_policy={
+            "policy_version": "EC_POLICY_V2",
+            "rules": {
+                "late_delivery_logistics": {
+                    "case_status": "action_required",
+                    "recommended_action": "refund_freight",
+                    "refund_brl": 16.0,
+                    "responsible_parties": [{"party_id": None, "party_type": "logistics_provider"}],
+                }
+            },
+        },
+    )
+
+
+def test_layered_order_rows_follow_claimed_timeline(tmp_path: Path) -> None:
+    output, _, gateway = run(tmp_path, "late_delivery_logistics", layered_data())
+    assert output["assessment"]["primary_issue"] == "late_delivery_logistics"
+    assert output["shipment_analysis"]["verdict"] == "logistics_delay"
+    assert output["payment_analysis"]["verdict"] == "reconciled"
+    assert output["payment_analysis"]["captured_total_brl"] == 16.0
+    assert output["financial_resolution"]["recommended_refund_brl"] == 16.0
+    assert output["resolution_actions"] == ["refund_freight"]
+    assert output["data_conflicts"][0]["field"] == "order_purchase_timestamp"
+    tools = {tool for tool, _ in gateway.calls}
+    assert "get_product_context" not in tools
+    assert "get_refund_timeline" not in tools
+
+
+def test_payment_topic_skips_shipment_lookup(tmp_path: Path) -> None:
+    _, _, gateway = run(tmp_path, "payment_mismatch", base_data())
+    assert "get_shipment_summary" not in {tool for tool, _ in gateway.calls}
