@@ -2,19 +2,17 @@
   "schema_version": "day09-l3b-output-v2",
   "case_id": "L3B_CASE_048",
   "assessment": {
-    "primary_issue": "payment_mismatch",
-    "secondary_issues": [
-      "late_delivery_seller"
-    ],
+    "primary_issue": "canceled_order_paid",
+    "secondary_issues": [],
     "case_status": "action_required",
-    "confidence": 0.55
+    "confidence": 0.92
   },
   "affected_entities": {
     "order_ids": [
       "71303d7e93b399f5bcd537d124c0bcfa"
     ],
     "item_ids": [
-      "71303d7e93b399f5bcd537d124c0bcfa:item-71303d7e93b3"
+      "item-71303d7e93b3"
     ],
     "seller_ids": [
       "seller-71303d7e93b3"
@@ -27,26 +25,26 @@
   "claim_assessments": [
     {
       "claim_id": "claim-048-a",
-      "verdict": "unsupported",
-      "confidence": 0.55,
+      "verdict": "supported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_my56nWB3nx2eMm12UhakuZNEJ3YdKFsa",
-        "ev_RY4lSZ2KbbvBfn52TXEJcoCRp2GWPVcG",
-        "ev_ZrbQtUKJdAvDfPRR8CLBDbsuKe94jFmw",
-        "ev_gnmaUtMF-E5it_q0RerxE96FaEP1q0s8",
-        "ev_xpNqU_qQtUC3Yr9QLv0k_wp3vTUARDHD"
+        "ev_zy3qJ8RP5z2GUbazhvXMuqa9YJY-OH2B",
+        "ev_UOIp-EPPRNoNWDTAGFYhpH29BgAmNLJm",
+        "ev_b6-MFME64QobrstLgDt0o5qDho1QUnmD",
+        "ev_y2vO9lC9HZnF8wf7Utbb5yFmTjNwnbh1",
+        "ev_hQhqKNfhSdCCTt6cQxd4J7AMN97OoO3o"
       ]
     },
     {
       "claim_id": "claim-048-b",
-      "verdict": "unsupported",
-      "confidence": 0.55,
+      "verdict": "supported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_my56nWB3nx2eMm12UhakuZNEJ3YdKFsa",
-        "ev_RY4lSZ2KbbvBfn52TXEJcoCRp2GWPVcG",
-        "ev_ZrbQtUKJdAvDfPRR8CLBDbsuKe94jFmw",
-        "ev_gnmaUtMF-E5it_q0RerxE96FaEP1q0s8",
-        "ev_xpNqU_qQtUC3Yr9QLv0k_wp3vTUARDHD"
+        "ev_zy3qJ8RP5z2GUbazhvXMuqa9YJY-OH2B",
+        "ev_UOIp-EPPRNoNWDTAGFYhpH29BgAmNLJm",
+        "ev_b6-MFME64QobrstLgDt0o5qDho1QUnmD",
+        "ev_y2vO9lC9HZnF8wf7Utbb5yFmTjNwnbh1",
+        "ev_hQhqKNfhSdCCTt6cQxd4J7AMN97OoO3o"
       ]
     }
   ],
@@ -65,47 +63,60 @@
     "related_order_ids": []
   },
   "shipment_analysis": {
-    "verdict": "seller_delay",
-    "late_seller_ids": [
-      "seller-71303d7e93b3"
-    ],
-    "timeline_complete": true
+    "verdict": "insufficient_evidence",
+    "late_seller_ids": [],
+    "timeline_complete": false
   },
   "payment_analysis": {
-    "verdict": "capture_mismatch",
-    "captured_total_brl": 97.0,
+    "verdict": "reconciled",
+    "captured_total_brl": 79.0,
     "refunded_total_brl": 0.0,
-    "refundable_total_brl": 97.0
+    "refundable_total_brl": 79.0
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "CAPTURE_AMOUNT_MISMATCH",
+        "cause_code": "CANCELED_ORDER_CAPTURED",
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
-        "party_type": "payment_provider",
+        "party_type": "platform",
         "party_id": null
       }
     ]
   },
   "evidence_refs": [
-    "ev_my56nWB3nx2eMm12UhakuZNEJ3YdKFsa",
-    "ev_RY4lSZ2KbbvBfn52TXEJcoCRp2GWPVcG",
-    "ev_ZrbQtUKJdAvDfPRR8CLBDbsuKe94jFmw",
-    "ev_gnmaUtMF-E5it_q0RerxE96FaEP1q0s8",
-    "ev_xpNqU_qQtUC3Yr9QLv0k_wp3vTUARDHD"
+    "ev_zy3qJ8RP5z2GUbazhvXMuqa9YJY-OH2B",
+    "ev_UOIp-EPPRNoNWDTAGFYhpH29BgAmNLJm",
+    "ev_b6-MFME64QobrstLgDt0o5qDho1QUnmD",
+    "ev_y2vO9lC9HZnF8wf7Utbb5yFmTjNwnbh1",
+    "ev_hQhqKNfhSdCCTt6cQxd4J7AMN97OoO3o"
   ],
-  "data_conflicts": [],
+  "data_conflicts": [
+    {
+      "field": "order_purchase_timestamp",
+      "sources": [
+        "get_order",
+        "get_customer_history"
+      ],
+      "selected_source": "get_customer_history",
+      "resolution_code": "ORDER_ROW_MATCHING_CLAIM_TIMELINE"
+    }
+  ],
   "financial_resolution": {
     "currency": "BRL",
-    "recommended_refund_brl": 0.0,
-    "refund_lines": []
+    "recommended_refund_brl": 79.0,
+    "refund_lines": [
+      {
+        "reason_code": "CANCELED_ORDER_PAID_REFUND",
+        "amount_brl": 79.0,
+        "entity_id": "71303d7e93b399f5bcd537d124c0bcfa:1"
+      }
+    ]
   },
   "resolution_actions": [
-    "refund_overcharge",
-    "reconcile_payment_capture"
+    "issue_refund"
   ]
 }

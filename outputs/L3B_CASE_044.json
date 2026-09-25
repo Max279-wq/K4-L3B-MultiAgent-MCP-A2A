@@ -2,17 +2,17 @@
   "schema_version": "day09-l3b-output-v2",
   "case_id": "L3B_CASE_044",
   "assessment": {
-    "primary_issue": "payment_mismatch",
+    "primary_issue": "duplicate_charge",
     "secondary_issues": [],
     "case_status": "action_required",
-    "confidence": 0.55
+    "confidence": 0.92
   },
   "affected_entities": {
     "order_ids": [
       "ded456690bcb2ffd4def86541479037f"
     ],
     "item_ids": [
-      "ded456690bcb2ffd4def86541479037f:item-ded456690bcb"
+      "item-ded456690bcb"
     ],
     "seller_ids": [
       "seller-ded456690bcb"
@@ -26,26 +26,26 @@
   "claim_assessments": [
     {
       "claim_id": "claim-044-a",
-      "verdict": "unsupported",
-      "confidence": 0.55,
+      "verdict": "supported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_ysQ_gjJMp_ddpl7fLRgFL1zZtAVN6USa",
-        "ev_EtxVVq-E8iI0wfXAg9TUJCCw-wpWr-7i",
-        "ev_ldX6HlCZeWa4-MhXiweadbIsjaxfK107",
-        "ev_CvJPsfQb6QdnyXaGrpZdxTIrbYs_uK0A",
-        "ev_Mc2aPDioVtBbFiF6Dg_Pl6pFzke_h7Hq"
+        "ev_DrEWboBDWHLqrn5QVQHyGzhBbw0KU_k5",
+        "ev_0XImz_gm4LN75iU4m7MnrQRLgHkFTJ78",
+        "ev_VY6-RvFvXV3UZ86TMYVN6O1LuZCOtE0W",
+        "ev_KjwWVh5f5BFhHc98NT0UaR1b7m8DI5Ue",
+        "ev_vTmCBUXR87cT_K9hucHI1r9dry3Ds3oM"
       ]
     },
     {
       "claim_id": "claim-044-b",
       "verdict": "partially_supported",
-      "confidence": 0.55,
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_ysQ_gjJMp_ddpl7fLRgFL1zZtAVN6USa",
-        "ev_EtxVVq-E8iI0wfXAg9TUJCCw-wpWr-7i",
-        "ev_ldX6HlCZeWa4-MhXiweadbIsjaxfK107",
-        "ev_CvJPsfQb6QdnyXaGrpZdxTIrbYs_uK0A",
-        "ev_Mc2aPDioVtBbFiF6Dg_Pl6pFzke_h7Hq"
+        "ev_DrEWboBDWHLqrn5QVQHyGzhBbw0KU_k5",
+        "ev_0XImz_gm4LN75iU4m7MnrQRLgHkFTJ78",
+        "ev_VY6-RvFvXV3UZ86TMYVN6O1LuZCOtE0W",
+        "ev_KjwWVh5f5BFhHc98NT0UaR1b7m8DI5Ue",
+        "ev_vTmCBUXR87cT_K9hucHI1r9dry3Ds3oM"
       ]
     }
   ],
@@ -64,20 +64,20 @@
     "related_order_ids": []
   },
   "shipment_analysis": {
-    "verdict": "on_time",
+    "verdict": "insufficient_evidence",
     "late_seller_ids": [],
-    "timeline_complete": true
+    "timeline_complete": false
   },
   "payment_analysis": {
-    "verdict": "capture_mismatch",
-    "captured_total_brl": 256.0,
+    "verdict": "duplicate_capture",
+    "captured_total_brl": 128.0,
     "refunded_total_brl": 0.0,
-    "refundable_total_brl": 256.0
+    "refundable_total_brl": 128.0
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "CAPTURE_AMOUNT_MISMATCH",
+        "cause_code": "DUPLICATE_CAPTURE",
         "rank": 1
       }
     ],
@@ -89,26 +89,35 @@
     ]
   },
   "evidence_refs": [
-    "ev_ysQ_gjJMp_ddpl7fLRgFL1zZtAVN6USa",
-    "ev_EtxVVq-E8iI0wfXAg9TUJCCw-wpWr-7i",
-    "ev_ldX6HlCZeWa4-MhXiweadbIsjaxfK107",
-    "ev_CvJPsfQb6QdnyXaGrpZdxTIrbYs_uK0A",
-    "ev_Mc2aPDioVtBbFiF6Dg_Pl6pFzke_h7Hq"
+    "ev_DrEWboBDWHLqrn5QVQHyGzhBbw0KU_k5",
+    "ev_0XImz_gm4LN75iU4m7MnrQRLgHkFTJ78",
+    "ev_VY6-RvFvXV3UZ86TMYVN6O1LuZCOtE0W",
+    "ev_KjwWVh5f5BFhHc98NT0UaR1b7m8DI5Ue",
+    "ev_vTmCBUXR87cT_K9hucHI1r9dry3Ds3oM"
   ],
-  "data_conflicts": [],
+  "data_conflicts": [
+    {
+      "field": "order_purchase_timestamp",
+      "sources": [
+        "get_order",
+        "get_customer_history"
+      ],
+      "selected_source": "get_customer_history",
+      "resolution_code": "ORDER_ROW_MATCHING_CLAIM_TIMELINE"
+    }
+  ],
   "financial_resolution": {
     "currency": "BRL",
-    "recommended_refund_brl": 78.0,
+    "recommended_refund_brl": 64.0,
     "refund_lines": [
       {
-        "reason_code": "PAYMENT_MISMATCH_REFUND",
-        "amount_brl": 78.0,
+        "reason_code": "DUPLICATE_CHARGE_REFUND",
+        "amount_brl": 64.0,
         "entity_id": "ded456690bcb2ffd4def86541479037f:1"
       }
     ]
   },
   "resolution_actions": [
-    "refund_overcharge",
-    "reconcile_payment_capture"
+    "refund_duplicate_charge"
   ]
 }

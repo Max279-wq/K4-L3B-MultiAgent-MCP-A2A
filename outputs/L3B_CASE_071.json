@@ -2,17 +2,17 @@
   "schema_version": "day09-l3b-output-v2",
   "case_id": "L3B_CASE_071",
   "assessment": {
-    "primary_issue": "payment_mismatch",
+    "primary_issue": "late_delivery_logistics",
     "secondary_issues": [],
     "case_status": "action_required",
-    "confidence": 0.55
+    "confidence": 0.92
   },
   "affected_entities": {
     "order_ids": [
       "676e40056867189a1b3599f3e646f421"
     ],
     "item_ids": [
-      "676e40056867189a1b3599f3e646f421:item-676e40056867"
+      "item-676e40056867"
     ],
     "seller_ids": [
       "seller-676e40056867"
@@ -25,26 +25,28 @@
   "claim_assessments": [
     {
       "claim_id": "claim-071-a",
-      "verdict": "unsupported",
-      "confidence": 0.55,
+      "verdict": "supported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_KBD0VRjma8j9-pgyZmZPJRrBx_RwREZo",
-        "ev_h2pQFd5-pTedS-pUoxofgH0HC4Urfh2Z",
-        "ev_Ahp6RXQuhHa8ZCTm5CHr_qffAZlzi2m3",
-        "ev_A3UM8_LK1IFWaOlIuy_nUm8qOcBre9Tz",
-        "ev_xBtI-9E3hs9FxlCQTGoLqYlZ39s862MH"
+        "ev_W7C5FS_gQSkTYoGlfZPbWf3xyoCLqmPU",
+        "ev_BPAfKGglhzUOUIG2MC79dDYl8LSXwSzv",
+        "ev_ygWM3ptsq-9EKiBbTC96UOXNlM0DFAGm",
+        "ev_vmZmOLDobPiPYh4t11zv6ZlCmmKYBx1g",
+        "ev_QIaGWC-ofSxFiQNEPl1YEzsEpSZ8u2Wz",
+        "ev_djLnTyAIOtjR-z8PNqI4w8B9Kopovq4M"
       ]
     },
     {
       "claim_id": "claim-071-b",
-      "verdict": "unsupported",
-      "confidence": 0.55,
+      "verdict": "supported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_KBD0VRjma8j9-pgyZmZPJRrBx_RwREZo",
-        "ev_h2pQFd5-pTedS-pUoxofgH0HC4Urfh2Z",
-        "ev_Ahp6RXQuhHa8ZCTm5CHr_qffAZlzi2m3",
-        "ev_A3UM8_LK1IFWaOlIuy_nUm8qOcBre9Tz",
-        "ev_xBtI-9E3hs9FxlCQTGoLqYlZ39s862MH"
+        "ev_W7C5FS_gQSkTYoGlfZPbWf3xyoCLqmPU",
+        "ev_BPAfKGglhzUOUIG2MC79dDYl8LSXwSzv",
+        "ev_ygWM3ptsq-9EKiBbTC96UOXNlM0DFAGm",
+        "ev_vmZmOLDobPiPYh4t11zv6ZlCmmKYBx1g",
+        "ev_QIaGWC-ofSxFiQNEPl1YEzsEpSZ8u2Wz",
+        "ev_djLnTyAIOtjR-z8PNqI4w8B9Kopovq4M"
       ]
     }
   ],
@@ -63,47 +65,61 @@
     "related_order_ids": []
   },
   "shipment_analysis": {
-    "verdict": "on_time",
-    "late_seller_ids": [
-      "seller-676e40056867"
-    ],
+    "verdict": "logistics_delay",
+    "late_seller_ids": [],
     "timeline_complete": true
   },
   "payment_analysis": {
-    "verdict": "capture_mismatch",
-    "captured_total_brl": 105.0,
+    "verdict": "reconciled",
+    "captured_total_brl": 16.0,
     "refunded_total_brl": 0.0,
-    "refundable_total_brl": 105.0
+    "refundable_total_brl": 16.0
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "CAPTURE_AMOUNT_MISMATCH",
+        "cause_code": "CARRIER_TRANSIT_DELAY",
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
-        "party_type": "payment_provider",
+        "party_type": "logistics_provider",
         "party_id": null
       }
     ]
   },
   "evidence_refs": [
-    "ev_KBD0VRjma8j9-pgyZmZPJRrBx_RwREZo",
-    "ev_h2pQFd5-pTedS-pUoxofgH0HC4Urfh2Z",
-    "ev_Ahp6RXQuhHa8ZCTm5CHr_qffAZlzi2m3",
-    "ev_A3UM8_LK1IFWaOlIuy_nUm8qOcBre9Tz",
-    "ev_xBtI-9E3hs9FxlCQTGoLqYlZ39s862MH"
+    "ev_W7C5FS_gQSkTYoGlfZPbWf3xyoCLqmPU",
+    "ev_BPAfKGglhzUOUIG2MC79dDYl8LSXwSzv",
+    "ev_ygWM3ptsq-9EKiBbTC96UOXNlM0DFAGm",
+    "ev_vmZmOLDobPiPYh4t11zv6ZlCmmKYBx1g",
+    "ev_QIaGWC-ofSxFiQNEPl1YEzsEpSZ8u2Wz",
+    "ev_djLnTyAIOtjR-z8PNqI4w8B9Kopovq4M"
   ],
-  "data_conflicts": [],
+  "data_conflicts": [
+    {
+      "field": "order_purchase_timestamp",
+      "sources": [
+        "get_order",
+        "get_customer_history"
+      ],
+      "selected_source": "get_customer_history",
+      "resolution_code": "ORDER_ROW_MATCHING_CLAIM_TIMELINE"
+    }
+  ],
   "financial_resolution": {
     "currency": "BRL",
-    "recommended_refund_brl": 0.0,
-    "refund_lines": []
+    "recommended_refund_brl": 16.0,
+    "refund_lines": [
+      {
+        "reason_code": "LATE_DELIVERY_LOGISTICS_REFUND",
+        "amount_brl": 16.0,
+        "entity_id": "item-676e40056867"
+      }
+    ]
   },
   "resolution_actions": [
-    "refund_overcharge",
-    "reconcile_payment_capture"
+    "refund_freight"
   ]
 }

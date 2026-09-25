@@ -2,17 +2,17 @@
   "schema_version": "day09-l3b-output-v2",
   "case_id": "L3B_CASE_032",
   "assessment": {
-    "primary_issue": "refund_failed",
+    "primary_issue": "valid_split_payment",
     "secondary_issues": [],
-    "case_status": "action_required",
-    "confidence": 0.65
+    "case_status": "no_action",
+    "confidence": 0.92
   },
   "affected_entities": {
     "order_ids": [
       "31f935babbc97f5990e0ffd128e19541"
     ],
     "item_ids": [
-      "31f935babbc97f5990e0ffd128e19541:item-31f935babbc9"
+      "item-31f935babbc9"
     ],
     "seller_ids": [
       "seller-31f935babbc9"
@@ -26,28 +26,26 @@
   "claim_assessments": [
     {
       "claim_id": "claim-032-a",
-      "verdict": "unsupported",
-      "confidence": 0.65,
+      "verdict": "supported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_oQeeTpcFJLuocHobC7_zxyvY5Ph6Nh7K",
-        "ev_hp2Eux35I77hVpLVZK4eTfid9vNxyhcL",
-        "ev_lfngAcQ6tByKCT7tnUwsuFvo6_Tpgz9g",
-        "ev_91n3i2UPoXkOeQQCz7GWz8Lg7_P1A5i2",
-        "ev_AqRX0L2cUm-OlCQG42qIu_XC8KAb72Hj",
-        "ev_15ZskbY8f9obbEeRh05qFc0PKBw4V9xz"
+        "ev_f8PF_CZuQ9Ib5u6u3uXthcMPkFFT9n4w",
+        "ev_FTuxaVJ6s1TpOPocWN_oDhoSO8s3LM6B",
+        "ev_f900Mb87zIJoJ47xz1GXjc5rAVwwNjXX",
+        "ev_nYgddRihpoxQt5e1YMVirYntkqXjf32I",
+        "ev_A4suiqOiJpiZ3b2D9_rO13YAqZCVbChL"
       ]
     },
     {
       "claim_id": "claim-032-b",
-      "verdict": "partially_supported",
-      "confidence": 0.65,
+      "verdict": "unsupported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_oQeeTpcFJLuocHobC7_zxyvY5Ph6Nh7K",
-        "ev_hp2Eux35I77hVpLVZK4eTfid9vNxyhcL",
-        "ev_lfngAcQ6tByKCT7tnUwsuFvo6_Tpgz9g",
-        "ev_91n3i2UPoXkOeQQCz7GWz8Lg7_P1A5i2",
-        "ev_AqRX0L2cUm-OlCQG42qIu_XC8KAb72Hj",
-        "ev_15ZskbY8f9obbEeRh05qFc0PKBw4V9xz"
+        "ev_f8PF_CZuQ9Ib5u6u3uXthcMPkFFT9n4w",
+        "ev_FTuxaVJ6s1TpOPocWN_oDhoSO8s3LM6B",
+        "ev_f900Mb87zIJoJ47xz1GXjc5rAVwwNjXX",
+        "ev_nYgddRihpoxQt5e1YMVirYntkqXjf32I",
+        "ev_A4suiqOiJpiZ3b2D9_rO13YAqZCVbChL"
       ]
     }
   ],
@@ -66,52 +64,54 @@
     "related_order_ids": []
   },
   "shipment_analysis": {
-    "verdict": "on_time",
+    "verdict": "insufficient_evidence",
     "late_seller_ids": [],
-    "timeline_complete": true
+    "timeline_complete": false
   },
   "payment_analysis": {
-    "verdict": "refund_failed",
-    "captured_total_brl": 141.0,
+    "verdict": "reconciled",
+    "captured_total_brl": 89.0,
     "refunded_total_brl": 0.0,
-    "refundable_total_brl": 141.0
+    "refundable_total_brl": 89.0
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "REFUND_PROCESSING_FAILED",
+        "cause_code": "VALID_SPLIT_PAYMENT",
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
-        "party_type": "payment_provider",
+        "party_type": "customer",
         "party_id": null
       }
     ]
   },
   "evidence_refs": [
-    "ev_oQeeTpcFJLuocHobC7_zxyvY5Ph6Nh7K",
-    "ev_hp2Eux35I77hVpLVZK4eTfid9vNxyhcL",
-    "ev_lfngAcQ6tByKCT7tnUwsuFvo6_Tpgz9g",
-    "ev_91n3i2UPoXkOeQQCz7GWz8Lg7_P1A5i2",
-    "ev_AqRX0L2cUm-OlCQG42qIu_XC8KAb72Hj",
-    "ev_15ZskbY8f9obbEeRh05qFc0PKBw4V9xz"
+    "ev_f8PF_CZuQ9Ib5u6u3uXthcMPkFFT9n4w",
+    "ev_FTuxaVJ6s1TpOPocWN_oDhoSO8s3LM6B",
+    "ev_f900Mb87zIJoJ47xz1GXjc5rAVwwNjXX",
+    "ev_nYgddRihpoxQt5e1YMVirYntkqXjf32I",
+    "ev_A4suiqOiJpiZ3b2D9_rO13YAqZCVbChL"
   ],
-  "data_conflicts": [],
+  "data_conflicts": [
+    {
+      "field": "order_purchase_timestamp",
+      "sources": [
+        "get_order",
+        "get_customer_history"
+      ],
+      "selected_source": "get_customer_history",
+      "resolution_code": "ORDER_ROW_MATCHING_CLAIM_TIMELINE"
+    }
+  ],
   "financial_resolution": {
     "currency": "BRL",
-    "recommended_refund_brl": 52.0,
-    "refund_lines": [
-      {
-        "reason_code": "REFUND_FAILED_REFUND",
-        "amount_brl": 52.0,
-        "entity_id": "31f935babbc97f5990e0ffd128e19541:1"
-      }
-    ]
+    "recommended_refund_brl": 0.0,
+    "refund_lines": []
   },
   "resolution_actions": [
-    "reissue_failed_refund",
-    "notify_customer_refund_status"
+    "document_no_action"
   ]
 }

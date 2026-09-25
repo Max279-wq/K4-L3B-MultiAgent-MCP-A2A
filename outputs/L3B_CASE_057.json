@@ -2,19 +2,17 @@
   "schema_version": "day09-l3b-output-v2",
   "case_id": "L3B_CASE_057",
   "assessment": {
-    "primary_issue": "payment_mismatch",
-    "secondary_issues": [
-      "late_delivery_seller"
-    ],
-    "case_status": "action_required",
-    "confidence": 0.55
+    "primary_issue": "unsupported_claim",
+    "secondary_issues": [],
+    "case_status": "no_action",
+    "confidence": 0.92
   },
   "affected_entities": {
     "order_ids": [
       "a833e4af2b4c893929b9f3adce3ecbeb"
     ],
     "item_ids": [
-      "a833e4af2b4c893929b9f3adce3ecbeb:item-a833e4af2b4c"
+      "item-a833e4af2b4c"
     ],
     "seller_ids": [
       "seller-a833e4af2b4c"
@@ -27,26 +25,28 @@
   "claim_assessments": [
     {
       "claim_id": "claim-057-a",
-      "verdict": "unsupported",
-      "confidence": 0.55,
+      "verdict": "supported",
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_QO7hkRRQ_vggT-XKIUU-GtGKkXsMSUaQ",
-        "ev_xH_Q-RcTnFNTd7p6Vgh3q88zlm3b01A7",
-        "ev_VGsM5AQP3XbgVDKOOxldgCQvDSIwwji3",
-        "ev_QgRMFRHegBnTXInBKwupbn_C6W-aKBi6",
-        "ev_1sLabo21a6SHy15jPl-547L9pYuZdBxO"
+        "ev_elTxC3tIdkZpQewy5zwtURMQvdkNomih",
+        "ev_UDUg0IUmwMLo2pL5VHd68-aBqXTE2PFg",
+        "ev_jGkzinFGvWLcg-jk5uPNW_ISkKnlf_OI",
+        "ev_DSjqo4OKsqIIw0M99Yh47X_3HmSVzLfg",
+        "ev_cqXSPB1bT6GxSyU7aqMXoAAap6ihLraZ",
+        "ev_k1RRvnkahnwvdyu1TyDhSL5xwkfza3ql"
       ]
     },
     {
       "claim_id": "claim-057-b",
       "verdict": "unsupported",
-      "confidence": 0.55,
+      "confidence": 0.92,
       "evidence_refs": [
-        "ev_QO7hkRRQ_vggT-XKIUU-GtGKkXsMSUaQ",
-        "ev_xH_Q-RcTnFNTd7p6Vgh3q88zlm3b01A7",
-        "ev_VGsM5AQP3XbgVDKOOxldgCQvDSIwwji3",
-        "ev_QgRMFRHegBnTXInBKwupbn_C6W-aKBi6",
-        "ev_1sLabo21a6SHy15jPl-547L9pYuZdBxO"
+        "ev_elTxC3tIdkZpQewy5zwtURMQvdkNomih",
+        "ev_UDUg0IUmwMLo2pL5VHd68-aBqXTE2PFg",
+        "ev_jGkzinFGvWLcg-jk5uPNW_ISkKnlf_OI",
+        "ev_DSjqo4OKsqIIw0M99Yh47X_3HmSVzLfg",
+        "ev_cqXSPB1bT6GxSyU7aqMXoAAap6ihLraZ",
+        "ev_k1RRvnkahnwvdyu1TyDhSL5xwkfza3ql"
       ]
     }
   ],
@@ -65,47 +65,55 @@
     "related_order_ids": []
   },
   "shipment_analysis": {
-    "verdict": "seller_delay",
-    "late_seller_ids": [
-      "seller-a833e4af2b4c"
-    ],
+    "verdict": "on_time",
+    "late_seller_ids": [],
     "timeline_complete": true
   },
   "payment_analysis": {
-    "verdict": "capture_mismatch",
-    "captured_total_brl": 105.0,
+    "verdict": "reconciled",
+    "captured_total_brl": 89.0,
     "refunded_total_brl": 0.0,
-    "refundable_total_brl": 105.0
+    "refundable_total_brl": 89.0
   },
   "root_cause_analysis": {
     "ranked_causes": [
       {
-        "cause_code": "CAPTURE_AMOUNT_MISMATCH",
+        "cause_code": "CLAIM_NOT_SUPPORTED_BY_EVIDENCE",
         "rank": 1
       }
     ],
     "responsible_parties": [
       {
-        "party_type": "payment_provider",
+        "party_type": "customer",
         "party_id": null
       }
     ]
   },
   "evidence_refs": [
-    "ev_QO7hkRRQ_vggT-XKIUU-GtGKkXsMSUaQ",
-    "ev_xH_Q-RcTnFNTd7p6Vgh3q88zlm3b01A7",
-    "ev_VGsM5AQP3XbgVDKOOxldgCQvDSIwwji3",
-    "ev_QgRMFRHegBnTXInBKwupbn_C6W-aKBi6",
-    "ev_1sLabo21a6SHy15jPl-547L9pYuZdBxO"
+    "ev_elTxC3tIdkZpQewy5zwtURMQvdkNomih",
+    "ev_UDUg0IUmwMLo2pL5VHd68-aBqXTE2PFg",
+    "ev_jGkzinFGvWLcg-jk5uPNW_ISkKnlf_OI",
+    "ev_DSjqo4OKsqIIw0M99Yh47X_3HmSVzLfg",
+    "ev_cqXSPB1bT6GxSyU7aqMXoAAap6ihLraZ",
+    "ev_k1RRvnkahnwvdyu1TyDhSL5xwkfza3ql"
   ],
-  "data_conflicts": [],
+  "data_conflicts": [
+    {
+      "field": "order_purchase_timestamp",
+      "sources": [
+        "get_order",
+        "get_customer_history"
+      ],
+      "selected_source": "get_customer_history",
+      "resolution_code": "ORDER_ROW_MATCHING_CLAIM_TIMELINE"
+    }
+  ],
   "financial_resolution": {
     "currency": "BRL",
     "recommended_refund_brl": 0.0,
     "refund_lines": []
   },
   "resolution_actions": [
-    "refund_overcharge",
-    "reconcile_payment_capture"
+    "document_no_action"
   ]
 }
