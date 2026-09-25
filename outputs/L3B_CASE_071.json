@@ -1,0 +1,109 @@
+{
+  "schema_version": "day09-l3b-output-v2",
+  "case_id": "L3B_CASE_071",
+  "assessment": {
+    "primary_issue": "payment_mismatch",
+    "secondary_issues": [],
+    "case_status": "action_required",
+    "confidence": 0.55
+  },
+  "affected_entities": {
+    "order_ids": [
+      "676e40056867189a1b3599f3e646f421"
+    ],
+    "item_ids": [
+      "676e40056867189a1b3599f3e646f421:item-676e40056867"
+    ],
+    "seller_ids": [
+      "seller-676e40056867"
+    ],
+    "payment_references": [
+      "676e40056867189a1b3599f3e646f421:1"
+    ],
+    "shipment_ids": []
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "claim-071-a",
+      "verdict": "unsupported",
+      "confidence": 0.55,
+      "evidence_refs": [
+        "ev_KBD0VRjma8j9-pgyZmZPJRrBx_RwREZo",
+        "ev_h2pQFd5-pTedS-pUoxofgH0HC4Urfh2Z",
+        "ev_Ahp6RXQuhHa8ZCTm5CHr_qffAZlzi2m3",
+        "ev_A3UM8_LK1IFWaOlIuy_nUm8qOcBre9Tz",
+        "ev_xBtI-9E3hs9FxlCQTGoLqYlZ39s862MH"
+      ]
+    },
+    {
+      "claim_id": "claim-071-b",
+      "verdict": "unsupported",
+      "confidence": 0.55,
+      "evidence_refs": [
+        "ev_KBD0VRjma8j9-pgyZmZPJRrBx_RwREZo",
+        "ev_h2pQFd5-pTedS-pUoxofgH0HC4Urfh2Z",
+        "ev_Ahp6RXQuhHa8ZCTm5CHr_qffAZlzi2m3",
+        "ev_A3UM8_LK1IFWaOlIuy_nUm8qOcBre9Tz",
+        "ev_xBtI-9E3hs9FxlCQTGoLqYlZ39s862MH"
+      ]
+    }
+  ],
+  "entity_resolution": {
+    "status": "resolved",
+    "resolved_order_ids": [
+      "676e40056867189a1b3599f3e646f421"
+    ],
+    "rejected_candidates": [
+      "candidate-071"
+    ],
+    "confidence": 0.95
+  },
+  "customer_context": {
+    "customer_unique_id": "customer-99f3e646f421",
+    "related_order_ids": []
+  },
+  "shipment_analysis": {
+    "verdict": "on_time",
+    "late_seller_ids": [
+      "seller-676e40056867"
+    ],
+    "timeline_complete": true
+  },
+  "payment_analysis": {
+    "verdict": "capture_mismatch",
+    "captured_total_brl": 105.0,
+    "refunded_total_brl": 0.0,
+    "refundable_total_brl": 105.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "CAPTURE_AMOUNT_MISMATCH",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "payment_provider",
+        "party_id": null
+      }
+    ]
+  },
+  "evidence_refs": [
+    "ev_KBD0VRjma8j9-pgyZmZPJRrBx_RwREZo",
+    "ev_h2pQFd5-pTedS-pUoxofgH0HC4Urfh2Z",
+    "ev_Ahp6RXQuhHa8ZCTm5CHr_qffAZlzi2m3",
+    "ev_A3UM8_LK1IFWaOlIuy_nUm8qOcBre9Tz",
+    "ev_xBtI-9E3hs9FxlCQTGoLqYlZ39s862MH"
+  ],
+  "data_conflicts": [],
+  "financial_resolution": {
+    "currency": "BRL",
+    "recommended_refund_brl": 0.0,
+    "refund_lines": []
+  },
+  "resolution_actions": [
+    "refund_overcharge",
+    "reconcile_payment_capture"
+  ]
+}

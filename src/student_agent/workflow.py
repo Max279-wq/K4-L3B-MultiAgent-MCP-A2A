@@ -187,13 +187,13 @@ class CaseContext:
         for attempt in range(TRANSIENT_RETRIES + 1):
             try:
                 raw = await self.gateway.call(tool_name, case_id=self.case_id, **arguments)
-            except (TimeoutError, ConnectionError, OSError):
+            except (TimeoutError, ConnectionError, OSError) as exc:
                 if attempt < TRANSIENT_RETRIES:
                     continue
-                self.failures.append(f"{tool_name}:timeout")
+                self.failures.append(f"{tool_name}:{type(exc).__name__}")
                 break
-            except (RuntimeError, ValueError):
-                self.failures.append(f"{tool_name}:error")
+            except (RuntimeError, ValueError) as exc:
+                self.failures.append(f"{tool_name}:{type(exc).__name__}")
                 break
             evidence = Evidence(
                 tool_name=tool_name,
@@ -1043,5 +1043,10 @@ async def solve_case(
 
     ctx.assign(POLICY_AGENT, "decide_policy")
     decision = await policy_agent(ctx, entity, order, shipment, payment)
+    if not entity.evidence and ctx.failures:
+        failures = ", ".join(ctx.failures)
+        raise RuntimeError(
+            f"{ctx.case_id}: entity resolution has no MCP evidence; failed calls: {failures}"
+        )
     ctx.assign(VERIFIER, "verify_output")
     return verifier_agent(ctx, entity, order, shipment, payment, decision)

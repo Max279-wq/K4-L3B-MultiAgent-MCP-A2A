@@ -1,0 +1,117 @@
+{
+  "schema_version": "day09-l3b-output-v2",
+  "case_id": "L3B_CASE_062",
+  "assessment": {
+    "primary_issue": "refund_failed",
+    "secondary_issues": [],
+    "case_status": "action_required",
+    "confidence": 0.65
+  },
+  "affected_entities": {
+    "order_ids": [
+      "8ac5066a163c60c1ae9bf17200df3dd1"
+    ],
+    "item_ids": [
+      "8ac5066a163c60c1ae9bf17200df3dd1:item-8ac5066a163c"
+    ],
+    "seller_ids": [
+      "seller-8ac5066a163c"
+    ],
+    "payment_references": [
+      "8ac5066a163c60c1ae9bf17200df3dd1:1",
+      "8ac5066a163c60c1ae9bf17200df3dd1:2"
+    ],
+    "shipment_ids": []
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "claim-062-a",
+      "verdict": "unsupported",
+      "confidence": 0.65,
+      "evidence_refs": [
+        "ev_dudJwGVbQv2oXlYNoQIlW1Hfl2tKuY70",
+        "ev_6sCOfDX1tAYV6ucWx_JayT4OhHGU7P-O",
+        "ev_8btrizp2MiPNHxEe8s2tDVEPhQWCbdeg",
+        "ev_tSi7ENmvf2FOxyxWz-VcxHydpkvzMCXJ",
+        "ev_9R0myQjz9iqYUKYVVCNNbqHj2lLzAUQm",
+        "ev_tW9rJxpydfmuYKPrQdkKTZr6fPeMCJbg"
+      ]
+    },
+    {
+      "claim_id": "claim-062-b",
+      "verdict": "partially_supported",
+      "confidence": 0.65,
+      "evidence_refs": [
+        "ev_dudJwGVbQv2oXlYNoQIlW1Hfl2tKuY70",
+        "ev_6sCOfDX1tAYV6ucWx_JayT4OhHGU7P-O",
+        "ev_8btrizp2MiPNHxEe8s2tDVEPhQWCbdeg",
+        "ev_tSi7ENmvf2FOxyxWz-VcxHydpkvzMCXJ",
+        "ev_9R0myQjz9iqYUKYVVCNNbqHj2lLzAUQm",
+        "ev_tW9rJxpydfmuYKPrQdkKTZr6fPeMCJbg"
+      ]
+    }
+  ],
+  "entity_resolution": {
+    "status": "resolved",
+    "resolved_order_ids": [
+      "8ac5066a163c60c1ae9bf17200df3dd1"
+    ],
+    "rejected_candidates": [
+      "candidate-062"
+    ],
+    "confidence": 0.95
+  },
+  "customer_context": {
+    "customer_unique_id": "customer-f17200df3dd1",
+    "related_order_ids": []
+  },
+  "shipment_analysis": {
+    "verdict": "on_time",
+    "late_seller_ids": [],
+    "timeline_complete": true
+  },
+  "payment_analysis": {
+    "verdict": "refund_failed",
+    "captured_total_brl": 141.0,
+    "refunded_total_brl": 0.0,
+    "refundable_total_brl": 141.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "REFUND_PROCESSING_FAILED",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "payment_provider",
+        "party_id": null
+      }
+    ]
+  },
+  "evidence_refs": [
+    "ev_dudJwGVbQv2oXlYNoQIlW1Hfl2tKuY70",
+    "ev_6sCOfDX1tAYV6ucWx_JayT4OhHGU7P-O",
+    "ev_8btrizp2MiPNHxEe8s2tDVEPhQWCbdeg",
+    "ev_tSi7ENmvf2FOxyxWz-VcxHydpkvzMCXJ",
+    "ev_9R0myQjz9iqYUKYVVCNNbqHj2lLzAUQm",
+    "ev_tW9rJxpydfmuYKPrQdkKTZr6fPeMCJbg"
+  ],
+  "data_conflicts": [],
+  "financial_resolution": {
+    "currency": "BRL",
+    "recommended_refund_brl": 52.0,
+    "refund_lines": [
+      {
+        "reason_code": "REFUND_FAILED_REFUND",
+        "amount_brl": 52.0,
+        "entity_id": "8ac5066a163c60c1ae9bf17200df3dd1:1"
+      }
+    ]
+  },
+  "resolution_actions": [
+    "reissue_failed_refund",
+    "notify_customer_refund_status"
+  ]
+}

@@ -9,7 +9,9 @@ from typing import Any
 
 import pytest
 
+from student_agent.cases import CaseSet
 from student_agent.contracts import Contracts
+from student_agent.submission import validate_artifacts
 from student_agent.trace import TraceWriter
 from student_agent.workflow import solve_case
 
@@ -175,7 +177,21 @@ def test_unsupported_claim_is_no_action(tmp_path: Path, topic: str) -> None:
     assert output["financial_resolution"]["recommended_refund_brl"] == 0
 
 
-def test_gateway_failure_yields_insufficient_evidence(tmp_path: Path) -> None:
-    output, _, _ = run(tmp_path, "payment_mismatch", {})
-    assert output["assessment"]["primary_issue"] == "insufficient_evidence"
-    assert output["assessment"]["confidence"] <= 0.4
+def test_gateway_failure_stops_before_unscorable_output(tmp_path: Path) -> None:
+    with pytest.raises(RuntimeError, match="entity resolution has no MCP evidence"):
+        run(tmp_path, "payment_mismatch", {})
+
+
+def test_submission_rejects_output_without_evidence(tmp_path: Path) -> None:
+    output, _, _ = run(tmp_path, "late_delivery_seller", base_data())
+    output["evidence_refs"] = []
+    output_path = tmp_path / "outputs" / "L3B_CASE_001.json"
+    output_path.parent.mkdir()
+    output_path.write_text(json.dumps(output), encoding="utf-8")
+    trace_path = tmp_path / "traces" / "trace.jsonl"
+    trace_path.parent.mkdir()
+    trace_path.write_bytes((tmp_path / "trace.jsonl").read_bytes())
+    case_set = CaseSet("test-v1", "l3b", ("L3B_CASE_001",), {})
+
+    with pytest.raises(ValueError, match="has no MCP evidence refs"):
+        validate_artifacts(tmp_path, case_set, Contracts(ROOT / "contracts" / "schemas"))
