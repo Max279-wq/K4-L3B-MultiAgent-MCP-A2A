@@ -295,6 +295,12 @@ def test_layered_order_rows_follow_claimed_timeline(tmp_path: Path) -> None:
     assert "get_refund_timeline" not in tools
 
 
-def test_payment_topic_skips_shipment_lookup(tmp_path: Path) -> None:
-    _, _, gateway = run(tmp_path, "payment_mismatch", base_data())
-    assert "get_shipment_summary" not in {tool for tool, _ in gateway.calls}
+def test_every_case_analyzes_shipment(tmp_path: Path) -> None:
+    output, _, gateway = run(tmp_path, "payment_mismatch", base_data())
+    assert "get_shipment_summary" in {tool for tool, _ in gateway.calls}
+    assert output["shipment_analysis"]["verdict"] != "insufficient_evidence"
+
+
+def test_canceled_order_fetches_refund_timeline(tmp_path: Path) -> None:
+    _, _, gateway = run(tmp_path, "canceled_order_paid", base_data())
+    assert "get_refund_timeline" in {tool for tool, _ in gateway.calls}

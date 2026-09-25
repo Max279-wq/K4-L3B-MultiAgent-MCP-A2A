@@ -352,12 +352,8 @@ def _issue_topics(case: dict[str, Any]) -> set[str]:
     return topics
 
 
-def _needs_shipment(case: dict[str, Any]) -> bool:
-    return bool(_issue_topics(case) & (SHIPMENT_ISSUES | {"unsupported_claim"}))
-
-
 def _needs_refunds(case: dict[str, Any]) -> bool:
-    return bool(_issue_topics(case) & REFUND_ISSUES)
+    return bool(_issue_topics(case) & (REFUND_ISSUES | {"canceled_order_paid"}))
 
 
 # --------------------------------------------------------------------------------------
@@ -1253,15 +1249,11 @@ async def solve_case(
         orders = await order_agent(ctx, order_id, entity)
         if orders:
             ctx.assign(PAYMENT_AGENT, "analyze_payment_refund")
-            shipments: list[ShipmentResult | None] = [None] * len(orders)
-            if _needs_shipment(case):
-                ctx.assign(SHIPMENT_AGENT, "analyze_shipment")
-                found, payments = await asyncio.gather(
-                    shipment_agent(ctx, orders), payment_agent(ctx, orders)
-                )
-                shipments = list(found)
-            else:
-                payments = await payment_agent(ctx, orders)
+            ctx.assign(SHIPMENT_AGENT, "analyze_shipment")
+            found, payments = await asyncio.gather(
+                shipment_agent(ctx, orders), payment_agent(ctx, orders)
+            )
+            shipments: list[ShipmentResult | None] = list(found)
             index = _select_candidate(case, orders, shipments, list(payments))
             order, shipment, payment = orders[index], shipments[index], payments[index]
 
